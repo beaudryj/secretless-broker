@@ -17,6 +17,8 @@ services:
       context: ../..
     environment:
       PG_PASSWORD: test
+    ports:
+      - 15432
     volumes:
       - ./secretless.yml:/secretless.yml
       - pg-socket:/sock

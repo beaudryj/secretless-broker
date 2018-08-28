@@ -16,3 +16,12 @@ docker-compose up \
   secretless
 
 sleep 2
+
+cat > .env <<EOF
+POSTGRES_PORT="$(docker-compose port pg 5432 | sed 's/.*://g')"
+SECRETLESS_PORT="$(docker-compose port secretless 15432 | sed 's/.*://g')"
+EOF
+
+echo
+echo ".env file created. If running \`go test\` locally, first run"
+echo "export \$(cat .env | xargs)"
