@@ -1,0 +1,58 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ include "secretless-demo.fullname" . }}
+  labels:
+    app: {{ include "secretless-demo.name" . }}
+    chart: {{ include "secretless-demo.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "secretless-demo.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "secretless-demo.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      serviceAccountName: "{{ include "secretless-demo.fullname" . }}-application"
+      containers:
+        - name: application
+          image: "{{ .Values.applicationImage.repository }}:{{ .Values.applicationImage.tag }}"
+          imagePullPolicy: {{ .Values.applicationImage.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.applicationPort }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          env:
+          - name: DB_URL
+            value: postgresql://localhost:5432/quick_start_db?sslmode=disable
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 5
+        - name: secretless
+          image: "{{ .Values.secretlessImage.repository }}:{{ .Values.secretlessImage.tag }}"
+          imagePullPolicy: IfNotPresent
+          args: ["-f", "/etc/secretless/secretless.yml"]
+          volumeMounts:
+          - name: config
+            mountPath: /etc/secretless
+            readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "secretless-demo.fullname" . }}
