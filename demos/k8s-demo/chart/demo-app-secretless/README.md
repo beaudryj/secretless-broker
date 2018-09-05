@@ -109,7 +109,7 @@ $ helm install \
 
 3. Configure PostgresSQL release for application 
 ```bash
-$ kubectl --namespace ${BACKEND_NAMESPACE} run --rm -i quick-start-backend-post-install --env PGPASSWORD=${DB_ADMIN_PASSWORD} --image=postgres:9.6 --restart=Never --command -- psql \
+$ kubectl run --rm -i configure-quick-start-backend --env PGPASSWORD=${DB_ADMIN_PASSWORD} --image=postgres:9.6 --restart=Never --command -- psql \
   -U ${DB_ADMIN_USER} \
   "postgres://$DB_URL" \
   << EOL
