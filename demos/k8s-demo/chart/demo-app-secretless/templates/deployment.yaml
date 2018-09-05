@@ -28,20 +28,12 @@ spec:
             - name: http
               containerPort: {{ .Values.applicationPort }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
           env:
           - name: DB_URL
             value: postgresql://localhost:5432/quick_start_db?sslmode=disable
           readinessProbe:
             tcpSocket:
-              port: 8080
+              port: http
             initialDelaySeconds: 3
             periodSeconds: 5
         - name: secretless
