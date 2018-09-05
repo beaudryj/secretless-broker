@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "secretless-demo.fullname" . }}
+  name: {{ include "demo-app-secretless.fullname" . }}
   labels:
-    app: {{ include "secretless-demo.name" . }}
-    chart: {{ include "secretless-demo.chart" . }}
+    app: {{ include "demo-app-secretless.name" . }}
+    chart: {{ include "demo-app-secretless.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
@@ -21,10 +21,10 @@ data:
         credentials:
           - name: address
             provider: kubernetes
-            id: {{ include "secretless-demo.fullname" . }}-credentials#address
+            id: {{ include "demo-app-secretless.fullname" . }}-credentials#address
           - name: username
             provider: kubernetes
-            id: {{ include "secretless-demo.fullname" . }}-credentials#username
+            id: {{ include "demo-app-secretless.fullname" . }}-credentials#username
           - name: password
             provider: kubernetes
-            id: {{ include "secretless-demo.fullname" . }}-credentials#password
+            id: {{ include "demo-app-secretless.fullname" . }}-credentials#password

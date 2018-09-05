@@ -1,13 +1,13 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "secretless-demo.fullname" . -}}
+{{- $fullName := include "demo-app-secretless.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    app: {{ include "secretless-demo.name" . }}
-    chart: {{ include "secretless-demo.chart" . }}
+    app: {{ include "demo-app-secretless.name" . }}
+    chart: {{ include "demo-app-secretless.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 {{- with .Values.ingress.annotations }}

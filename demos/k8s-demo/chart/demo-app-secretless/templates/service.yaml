@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "secretless-demo.fullname" . }}
+  name: {{ include "demo-app-secretless.fullname" . }}
   labels:
-    app: {{ include "secretless-demo.name" . }}
-    chart: {{ include "secretless-demo.chart" . }}
+    app: {{ include "demo-app-secretless.name" . }}
+    chart: {{ include "demo-app-secretless.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
@@ -15,5 +15,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: {{ include "secretless-demo.name" . }}
+    app: {{ include "demo-app-secretless.name" . }}
     release: {{ .Release.Name }}

@@ -1,25 +1,25 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ include "secretless-demo.fullname" . }}
+  name: {{ include "demo-app-secretless.fullname" . }}
   labels:
-    app: {{ include "secretless-demo.name" . }}
-    chart: {{ include "secretless-demo.chart" . }}
+    app: {{ include "demo-app-secretless.name" . }}
+    chart: {{ include "demo-app-secretless.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "secretless-demo.name" . }}
+      app: {{ include "demo-app-secretless.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ include "secretless-demo.name" . }}
+        app: {{ include "demo-app-secretless.name" . }}
         release: {{ .Release.Name }}
     spec:
-      serviceAccountName: "{{ include "secretless-demo.fullname" . }}-application"
+      serviceAccountName: "{{ include "demo-app-secretless.fullname" . }}-application"
       containers:
         - name: application
           image: "{{ .Values.applicationImage.repository }}:{{ .Values.applicationImage.tag }}"
@@ -55,4 +55,4 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: {{ include "secretless-demo.fullname" . }}
+            name: {{ include "demo-app-secretless.fullname" . }}
