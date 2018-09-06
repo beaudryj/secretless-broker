@@ -1,22 +1,4 @@
----
-kind: Secret
-apiVersion: v1
-metadata:
-  name: "{{ include "demo-app-secretless.fullname" . }}-credentials"
-type: Opaque
-data:
-  address:  {{ (required "A valid .Values.applicationDBAddress entry required!" .Values.applicationDBAddress) | b64enc | quote }}
-  username: {{ (required "A valid .Values.applicationDBUsername entry required!" .Values.applicationDBUsername) | b64enc | quote }}
-  password: {{ (required "A valid .Values.applicationDBPassword entry required!" .Values.applicationDBPassword) | b64enc | quote }}
-
----
-# This role is allow to [get] the credentials secret
-# in the namespace where this manifest is applied
-kind: ServiceAccount
-apiVersion: v1
-metadata:
-  name: "{{ include "demo-app-secretless.fullname" . }}-application"
-
+{{- if .Values.withSecretless }}
 ---
 # This role is allow to [get] the credentials secret
 # in the namespace where this manifest is applied
@@ -45,3 +27,4 @@ roleRef:
   kind: Role
   name: "{{ include "demo-app-secretless.fullname" . }}-credentials-reader"
   apiGroup: rbac.authorization.k8s.io
+{{- end }}

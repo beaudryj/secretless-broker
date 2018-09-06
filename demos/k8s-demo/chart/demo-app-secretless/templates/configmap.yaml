@@ -1,3 +1,4 @@
+{{- if .Values.withSecretless }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -28,3 +29,4 @@ data:
           - name: password
             provider: kubernetes
             id: {{ include "demo-app-secretless.fullname" . }}-credentials#password
+{{- end }}

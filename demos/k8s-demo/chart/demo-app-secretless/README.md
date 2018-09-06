@@ -52,6 +52,7 @@ The following table lists the configurable parameters of the PostgreSQL chart an
 | `applicationDBUsername`       | Application database username                   | `nil` (required)                                           |
 | `applicationDBPassword`       | Application database password                   | `nil` (required)                                           |
 | `applicationPort`             | Image pull secrets                              | `nil` (required)                                           |
+| `withSecretless`              | Inject and leverage Secretless broker           | `true`                                                     |
 | `applicationImage.repository` | Application image repository                    | `cyberark/demo-app`                                        |
 | `applicationImage.tag`        | Application image tag                           | `latest`                                                   |
 | `applicationImage.pullPolicy` | Application image pull policy                   | `IfNotPresent`                                             |
@@ -70,7 +71,9 @@ $ helm install --name my-release \
    https://raw.githubusercontent.com/cyberark/secretless-broker/k8s-demo-helm-chart/demos/k8s-demo/chart/demo-app-secretless-0.1.0.tgz
 ```
 
-The above command creates a deployment of application+secretless pods, store the credentials in the secret store where Secretless will use them to broker a connection to the remote database at `db.svc.cluster.local:5432`  named `my-database`.
+The above command creates a deployment of application + Secretless pods, stores the application db-credentials in the secret store for Secretless to use in brokering a connection to the remote database at `db.svc.cluster.local:5432`  named `my-database`.
+
+Setting `withSecretless` to `false` will only deploy the application, hard-coding the credentials as environment variables. This is useful for comparison purposes.
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
 
@@ -135,5 +138,15 @@ $ helm install \
   --set applicationDBAddress="${DB_URL}/${DB_NAME}" \
   --set applicationDBUsername="${DB_USER}" \
   --set applicationDBPassword="${DB_INITIAL_PASSWORD}" \
+  https://raw.githubusercontent.com/cyberark/secretless-broker/k8s-demo-helm-chart/demos/k8s-demo/chart/demo-app-secretless-0.1.0.tgz
+```
+
+5. Install application release (without Secretless) using this Helm chart
+```bash
+$ helm install \
+  --set applicationDBAddress="${DB_URL}/${DB_NAME}" \
+  --set applicationDBUsername="${DB_USER}" \
+  --set applicationDBPassword="${DB_INITIAL_PASSWORD}" \
+  --set withSecretless=false \
   https://raw.githubusercontent.com/cyberark/secretless-broker/k8s-demo-helm-chart/demos/k8s-demo/chart/demo-app-secretless-0.1.0.tgz
 ```

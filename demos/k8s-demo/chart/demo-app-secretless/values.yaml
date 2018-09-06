@@ -6,6 +6,10 @@ replicaCount: 1
 
 applicationPort: 8080
 
+# applicationDBAddress: ""
+# applicationDBUsername: ""
+# applicationDBPassword: ""
+
 applicationImage:
   repository: cyberark/demo-app
   tag: latest
@@ -15,6 +19,8 @@ secretlessImage:
   repository: cyberark/secretless-broker
   tag: latest
   pullPolicy: IfNotPresent
+
+withSecretless: true
 
 nameOverride: ""
 fullnameOverride: ""

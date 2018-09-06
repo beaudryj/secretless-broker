@@ -13,7 +13,8 @@
   export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "demo-app-secretless.fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
   echo http://$SERVICE_IP:{{ .Values.service.port }}
 {{- else if contains "ClusterIP" .Values.service.type }}
+  export LOCAL_PORT=8080
   export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ include "demo-app-secretless.name" . }},release={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
-  echo "Visit http://127.0.0.1:8080 to use your application"
-  kubectl port-forward $POD_NAME 8080:{{ .Values.applicationPort }}
+  echo "Visit http://127.0.0.1:${LOCAL_PORT} to use your application"
+  kubectl port-forward $POD_NAME ${LOCAL_PORT}:{{ .Values.applicationPort }}
 {{- end }}
